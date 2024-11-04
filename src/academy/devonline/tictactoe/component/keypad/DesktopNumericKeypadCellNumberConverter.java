@@ -15,13 +15,13 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.component;
+package academy.devonline.tictactoe.component.keypad;
 
 import academy.devonline.tictactoe.model.Cell;
 
-public class CellNumberConverter {
+public class DesktopNumericKeypadCellNumberConverter implements CellNumberConverter {
 
-    private final char[][] mapping = {
+    final char[][] mapping = {
             {'7', '8', '9'},
             {'4', '5', '6'},
             {'1', '2', '3'}
