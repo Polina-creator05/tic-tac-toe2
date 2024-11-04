@@ -19,13 +19,14 @@ package academy.devonline.tictactoe.component.keypad;
 
 import academy.devonline.tictactoe.model.Cell;
 
-public class DesktopNumericKeypadCellNumberConverter implements CellNumberConverter {
+public class TerminalNumericKeypadCellNumberConverter implements CellNumberConverter {
 
     final char[][] mapping = {
-            {'7', '8', '9'},
+            {'1', '2', '3'},
             {'4', '5', '6'},
-            {'1', '2', '3'}
+            {'7', '8', '9'}
     };
+
 
     @Override
     public Cell toCell(final char number) {

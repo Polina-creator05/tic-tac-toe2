@@ -19,7 +19,7 @@ package academy.devonline.tictactoe;
 
 import academy.devonline.tictactoe.component.*;
 import academy.devonline.tictactoe.component.keypad.CellNumberConverter;
-import academy.devonline.tictactoe.component.keypad.DesktopNumericKeypadCellNumberConverter;
+import academy.devonline.tictactoe.component.keypad.TerminalNumericKeypadCellNumberConverter;
 
 /**
  * @author devonline
@@ -29,7 +29,7 @@ public final class Launcher {
 
     public static void main(final String[] args) {
 
-        final CellNumberConverter cellNumberConverter = new DesktopNumericKeypadCellNumberConverter();
+        final CellNumberConverter cellNumberConverter = new TerminalNumericKeypadCellNumberConverter();
 
 
         final Game game =
