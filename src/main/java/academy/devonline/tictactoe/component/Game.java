@@ -38,6 +38,7 @@ public class Game {
 
     private final CellVerifier cellVerifier;
 
+
     public Game(final DataPrinter dataPrinter,
                 final ComputerMove computerMove,
                 final UserMove userMove,
@@ -51,7 +52,6 @@ public class Game {
     }
 
     public void play() {
-
         System.out.println("Use the following mapping table to specify a cell using number from 1 to 9");
         dataPrinter.printMappingTable();
         final GameTable gameTable = new GameTable();
@@ -61,28 +61,40 @@ public class Game {
             dataPrinter.printGameTable(gameTable);
         }
 
+        Move[] moves = {userMove, computerMove};
+
         while (true) {
-            userMove.make(gameTable);
-            dataPrinter.printGameTable(gameTable);
-            if (winnerVerifier.isUserWin(gameTable)) {
-                System.out.println("You win!");
-                break;
-            } else if (cellVerifier.allCellsFilled(gameTable)) {
-                System.out.println("Sorry, Draw!");
-                break;
+            boolean gameOver = false;
+            for (final Move move : moves) {
+                move.make(gameTable);
+                dataPrinter.printGameTable(gameTable);
+                if (move instanceof UserMove) {
+                    if (winnerVerifier.isUserWin(gameTable)) {
+                        System.out.println("You win!");
+                        gameOver = true;
+                        break;
+                    }
+                } else {
+                    if (winnerVerifier.computerWin(gameTable)) {
+                        System.out.println("Computer win!");
+                        gameOver = true;
+                        break;
+                    }
+                }
+                if (cellVerifier.allCellsFilled(gameTable)) {
+                    System.out.println("Sorry, Draw!");
+                    gameOver = true;
+                    break;
+                }
             }
-            computerMove.make(gameTable);
-            dataPrinter.printGameTable(gameTable);
-            if (winnerVerifier.computerWin(gameTable)) {
-                System.out.println("Computer win!");
-                break;
-            } else if (cellVerifier.allCellsFilled(gameTable)) {
-                System.out.println("Sorry, Draw!");
+            if (gameOver) {
                 break;
             }
         }
+
 
         System.out.println("Game over!");
 
     }
 }
+

@@ -36,7 +36,8 @@ public final class Launcher {
                 new Game(new DataPrinter(cellNumberConverter),
                         new ComputerMove(),
                         new UserMove(cellNumberConverter),
-                        new WinnerVerifier(), new CellVerifier());
+                        new WinnerVerifier(),
+                        new CellVerifier());
 
         game.play();
 

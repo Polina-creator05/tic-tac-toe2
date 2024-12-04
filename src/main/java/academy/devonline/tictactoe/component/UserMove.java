@@ -23,11 +23,13 @@ import academy.devonline.tictactoe.model.GameTable;
 
 import java.util.Scanner;
 
+import static academy.devonline.tictactoe.model.Sign.X;
+
 /**
  * @author devonline
  * @link http://devonline.academy/java
  */
-public class UserMove {
+public class UserMove implements Move {
 
     private final CellNumberConverter cellNumberConverter;
 
@@ -35,11 +37,12 @@ public class UserMove {
         this.cellNumberConverter = cellNumberConverter;
     }
 
+    @Override
     public void make(final GameTable gameTable) {
         while (true) {
             final Cell cell = getUserInput(gameTable);
             if (gameTable.isEmpty(cell)) {
-                gameTable.setSign(cell, 'x');
+                gameTable.setSign(cell, X);
                 return;
             } else {
                 System.out.println("Can't make a move, because the cell is not free! Try again!");

@@ -17,30 +17,10 @@
 
 package academy.devonline.tictactoe.component;
 
-import academy.devonline.tictactoe.model.Cell;
 import academy.devonline.tictactoe.model.GameTable;
 
-import java.util.Random;
+public interface Move {
 
-import static academy.devonline.tictactoe.model.Sign.O;
+    void make(final GameTable gameTable);
 
-/**
- * @author devonline
- * @link http://devonline.academy/java
- */
-public class ComputerMove implements Move {
-
-    @Override
-    public void make(final GameTable gameTable) {
-        final Random random = new Random();
-        while (true) {
-            final int row = new Random().nextInt(3);
-            final int col = new Random().nextInt(3);
-            final Cell randomCell = new Cell(row, col);
-            if (gameTable.isEmpty(randomCell)) {
-                gameTable.setSign(randomCell, O);
-                return;
-            }
-        }
-    }
 }
