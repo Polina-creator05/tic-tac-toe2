@@ -15,20 +15,11 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe;
+package academy.devonline.tictactoe.model;
 
-import academy.devonline.tictactoe.component.Game;
-import academy.devonline.tictactoe.component.GameFactory;
+public enum PlayerType {
 
-/**
- * @author devonline
- * @link http://devonline.academy/java
- */
-public final class Launcher {
+    USER,
 
-    public static void main(final String[] args) {
-        GameFactory gameFactory = new GameFactory(args);
-        Game game = gameFactory.create();
-        game.play();
-    }
+    COMPUTER
 }
