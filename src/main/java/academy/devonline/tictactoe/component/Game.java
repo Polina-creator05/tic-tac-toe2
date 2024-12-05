@@ -18,8 +18,10 @@
 package academy.devonline.tictactoe.component;
 
 import academy.devonline.tictactoe.model.GameTable;
+import academy.devonline.tictactoe.model.Player;
 
-import java.util.Random;
+import static academy.devonline.tictactoe.model.Sign.O;
+import static academy.devonline.tictactoe.model.Sign.X;
 
 /**
  * @author devonline
@@ -56,29 +58,22 @@ public class Game {
         dataPrinter.printMappingTable();
         final GameTable gameTable = new GameTable();
 
-        if (new Random().nextBoolean()) {
+        /*if (new Random().nextBoolean()) {
             computerMove.make(gameTable);
             dataPrinter.printGameTable(gameTable);
-        }
+        }*/
 
         Move[] moves = {userMove, computerMove};
+        Player[] players = {new Player(X, userMove), new Player(O, computerMove)};
 
         while (true) {
-            for (final Move move : moves) {
-                move.make(gameTable);
+            for (final Player player : players) {
+                player.makeMove(gameTable);
                 dataPrinter.printGameTable(gameTable);
-                if (move instanceof UserMove) {
-                    if (winnerVerifier.isUserWin(gameTable)) {
-                        System.out.println("You win!");
-                        printGameOver();
-                        return;
-                    }
-                } else {
-                    if (winnerVerifier.computerWin(gameTable)) {
-                        System.out.println("Computer win!");
-                        printGameOver();
-                        return;
-                    }
+                if (winnerVerifier.isWinner(gameTable, player)) {
+                    System.out.println(player + "win!");
+                    printGameOver();
+                    return;
                 }
                 if (cellVerifier.allCellsFilled(gameTable)) {
                     System.out.println("Sorry, Draw!");
@@ -87,6 +82,7 @@ public class Game {
                 }
             }
         }
+
     }
 
     void printGameOver() {
