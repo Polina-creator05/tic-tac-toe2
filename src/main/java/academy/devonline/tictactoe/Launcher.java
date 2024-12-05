@@ -20,6 +20,10 @@ package academy.devonline.tictactoe;
 import academy.devonline.tictactoe.component.*;
 import academy.devonline.tictactoe.component.keypad.CellNumberConverter;
 import academy.devonline.tictactoe.component.keypad.TerminalNumericKeypadCellNumberConverter;
+import academy.devonline.tictactoe.model.Player;
+
+import static academy.devonline.tictactoe.model.Sign.O;
+import static academy.devonline.tictactoe.model.Sign.X;
 
 /**
  * @author devonline
@@ -34,10 +38,11 @@ public final class Launcher {
 
         final Game game =
                 new Game(new DataPrinter(cellNumberConverter),
-                        new ComputerMove(),
-                        new UserMove(cellNumberConverter),
+                        new Player(X, new UserMove(cellNumberConverter)),
+                        new Player(O, new ComputerMove()),
                         new WinnerVerifier(),
-                        new CellVerifier());
+                        new CellVerifier(),
+                        true);
 
         game.play();
 
