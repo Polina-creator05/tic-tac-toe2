@@ -22,7 +22,6 @@ import academy.devonline.tictactoe.component.keypad.TerminalNumericKeypadCellNum
 import academy.devonline.tictactoe.model.Player;
 import academy.devonline.tictactoe.model.PlayerType;
 
-import static academy.devonline.tictactoe.model.PlayerType.COMPUTER;
 import static academy.devonline.tictactoe.model.PlayerType.USER;
 import static academy.devonline.tictactoe.model.Sign.O;
 import static academy.devonline.tictactoe.model.Sign.X;
@@ -34,30 +33,9 @@ public class GameFactory {
     private final PlayerType playerType2;
 
     public GameFactory(final String[] args) {
-        PlayerType playerType1 = null;
-        PlayerType playerType2 = null;
-        for (final String arg : args) {
-            if (USER.name().equalsIgnoreCase(arg) || COMPUTER.name().equalsIgnoreCase(arg)) {
-                if (playerType1 == null) {
-                    playerType1 = PlayerType.valueOf(arg.toUpperCase());
-                } else if (playerType2 == null) {
-                    playerType2 = PlayerType.valueOf(arg.toUpperCase());
-                }
-            } else {
-                System.err.println("Unsupported command line argument: '" + arg + "'");
-            }
-        }
-        if (playerType1 == null) {
-            this.playerType1 = USER;
-            this.playerType2 = COMPUTER;
-        } else if (playerType2 == null) {
-            this.playerType1 = USER;
-            this.playerType2 = playerType1;
-        } else {
-            this.playerType1 = playerType1;
-            this.playerType2 = playerType2;
-        }
-
+        final CommandLineArgumentParser.PlayerTypes playerTypes = new CommandLineArgumentParser(args).parse();
+        this.playerType1 = playerTypes.getPlayerType1();
+        this.playerType2 = playerTypes.getPlayerType2();
     }
 
     public Game create() {
