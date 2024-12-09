@@ -17,8 +17,9 @@
 
 package academy.devonline.tictactoe.component;
 
-import academy.devonline.tictactoe.component.keypad.CellNumberConverter;
-import academy.devonline.tictactoe.component.keypad.TerminalNumericKeypadCellNumberConverter;
+import academy.devonline.tictactoe.component.console.ConsoleDatePrinter;
+import academy.devonline.tictactoe.component.console.ConsoleUserInputReader;
+import academy.devonline.tictactoe.component.keypad.DesktopNumericKeypadCellNumberConverter;
 import academy.devonline.tictactoe.model.Player;
 import academy.devonline.tictactoe.model.PlayerType;
 
@@ -27,6 +28,7 @@ import static academy.devonline.tictactoe.model.Sign.O;
 import static academy.devonline.tictactoe.model.Sign.X;
 
 public class GameFactory {
+
 
     private final PlayerType playerType1;
 
@@ -39,22 +41,25 @@ public class GameFactory {
     }
 
     public Game create() {
-        final CellNumberConverter cellNumberConverter = new TerminalNumericKeypadCellNumberConverter();
+        final CellNumberConverter cellNumberConverter = new DesktopNumericKeypadCellNumberConverter();
+        final DataPrinter dataPrinter = new ConsoleDatePrinter(cellNumberConverter);
+        final UserInputReader userInputReader = new ConsoleUserInputReader(cellNumberConverter, dataPrinter);
         final Player player1;
         if (playerType1 == USER) {
-            player1 = new Player(X, new UserMove(cellNumberConverter));
+            player1 = new Player(X, new UserMove(userInputReader, dataPrinter));
         } else {
             player1 = new Player(X, new ComputerMove());
         }
         final Player player2;
         if (playerType2 == USER) {
-            player2 = new Player(O, new UserMove(cellNumberConverter));
+            player2 = new Player(O, new UserMove(userInputReader, dataPrinter));
         } else {
             player2 = new Player(O, new ComputerMove());
         }
 
         final boolean canSecondPlayerMakeFirstMove = playerType1 != playerType2;
-        return new Game(new DataPrinterImpl(cellNumberConverter),
+        return new Game(
+                dataPrinter,
                 player1,
                 player2,
                 new WinnerVerifier(),

@@ -17,11 +17,12 @@
 
 package academy.devonline.tictactoe.component.keypad;
 
+import academy.devonline.tictactoe.component.CellNumberConverter;
 import academy.devonline.tictactoe.model.Cell;
 
 public class DesktopNumericKeypadCellNumberConverter implements CellNumberConverter {
 
-    final char[][] mapping = {
+    private final char[][] mapping = {
             {'7', '8', '9'},
             {'4', '5', '6'},
             {'1', '2', '3'}

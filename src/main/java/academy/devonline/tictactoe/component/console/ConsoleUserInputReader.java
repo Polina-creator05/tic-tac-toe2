@@ -17,11 +17,10 @@
 
 package academy.devonline.tictactoe.component.console;
 
+import academy.devonline.tictactoe.component.CellNumberConverter;
 import academy.devonline.tictactoe.component.DataPrinter;
 import academy.devonline.tictactoe.component.UserInputReader;
-import academy.devonline.tictactoe.component.keypad.CellNumberConverter;
 import academy.devonline.tictactoe.model.Cell;
-import academy.devonline.tictactoe.model.GameTable;
 
 import java.util.Scanner;
 
@@ -36,7 +35,7 @@ public class ConsoleUserInputReader implements UserInputReader {
     }
 
     @Override
-    public Cell getUserInput(final GameTable gameTable) {
+    public Cell getUserInput() {
         while (true) {
             dataPrinter.printInfoMessage("Please type number between 1 and 9: ");
             final String userInput = new Scanner(System.in).nextLine();

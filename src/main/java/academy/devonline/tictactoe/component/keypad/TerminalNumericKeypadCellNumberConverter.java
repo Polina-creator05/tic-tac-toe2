@@ -17,6 +17,7 @@
 
 package academy.devonline.tictactoe.component.keypad;
 
+import academy.devonline.tictactoe.component.CellNumberConverter;
 import academy.devonline.tictactoe.model.Cell;
 
 public class TerminalNumericKeypadCellNumberConverter implements CellNumberConverter {

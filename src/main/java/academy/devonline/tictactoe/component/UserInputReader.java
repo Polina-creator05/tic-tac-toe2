@@ -18,9 +18,8 @@
 package academy.devonline.tictactoe.component;
 
 import academy.devonline.tictactoe.model.Cell;
-import academy.devonline.tictactoe.model.GameTable;
 
 public interface UserInputReader {
 
-    Cell getUserInput(GameTable gameTable);
+    Cell getUserInput();
 }

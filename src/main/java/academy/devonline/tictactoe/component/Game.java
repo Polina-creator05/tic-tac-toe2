@@ -29,7 +29,7 @@ import java.util.Random;
 public class Game {
 
 
-    private final DataPrinterImpl dataPrinter;
+    private final DataPrinter dataPrinter;
 
     private final Player player1;
 
@@ -42,7 +42,7 @@ public class Game {
     private final boolean canSecondPlayerMakeFirstMove;
 
 
-    public Game(final DataPrinterImpl dataPrinter,
+    public Game(final DataPrinter dataPrinter,
                 final Player player1,
                 final Player player2,
                 final WinnerVerifier winnerVerifier,
@@ -57,7 +57,7 @@ public class Game {
     }
 
     public void play() {
-        System.out.println("Use the following mapping table to specify a cell using number from 1 to 9");
+        dataPrinter.printInfoMessage("Use the following mapping table to specify a cell using number from 1 to 9");
         dataPrinter.printMappingTable();
         final GameTable gameTable = new GameTable();
 
@@ -66,18 +66,18 @@ public class Game {
             dataPrinter.printGameTable(gameTable);
         }
 
-        Player[] players = {player1, player2};
+        final Player[] players = {player1, player2};
         while (true) {
             for (final Player player : players) {
                 player.makeMove(gameTable);
                 dataPrinter.printGameTable(gameTable);
                 if (winnerVerifier.isWinner(gameTable, player)) {
-                    System.out.println(player + "win!");
+                    dataPrinter.printInfoMessage(player + "win!");
                     printGameOver();
                     return;
                 }
                 if (cellVerifier.allCellsFilled(gameTable)) {
-                    System.out.println("Sorry, Draw!");
+                    dataPrinter.printInfoMessage("Sorry, Draw!");
                     printGameOver();
                     return;
                 }
@@ -87,7 +87,7 @@ public class Game {
     }
 
     void printGameOver() {
-        System.out.println("Game over!");
+        dataPrinter.printInfoMessage("Game over!");
 
     }
 }

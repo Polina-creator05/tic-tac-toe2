@@ -15,7 +15,7 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.component.keypad;
+package academy.devonline.tictactoe.component;
 
 import academy.devonline.tictactoe.model.Cell;
 

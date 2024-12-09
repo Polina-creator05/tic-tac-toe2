@@ -24,7 +24,7 @@ import static academy.devonline.tictactoe.model.PlayerType.USER;
 
 public class CommandLineArgumentParser {
 
-    final String[] args;
+    private final String[] args;
 
     public CommandLineArgumentParser(final String[] args) {
         this.args = args;
@@ -39,6 +39,8 @@ public class CommandLineArgumentParser {
                     playerType1 = PlayerType.valueOf(arg.toUpperCase());
                 } else if (playerType2 == null) {
                     playerType2 = PlayerType.valueOf(arg.toUpperCase());
+                } else {
+                    System.err.println("Unsupported command line argument: '" + arg + "'");
                 }
             } else {
                 System.err.println("Unsupported command line argument: '" + arg + "'");
