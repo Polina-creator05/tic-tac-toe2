@@ -15,44 +15,30 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.component;
+package academy.devonline.tictactoe.component.console;
 
+import academy.devonline.tictactoe.component.DataPrinter;
+import academy.devonline.tictactoe.component.UserInputReader;
 import academy.devonline.tictactoe.component.keypad.CellNumberConverter;
 import academy.devonline.tictactoe.model.Cell;
 import academy.devonline.tictactoe.model.GameTable;
-import academy.devonline.tictactoe.model.Sign;
 
 import java.util.Scanner;
 
-/**
- * @author devonline
- * @link http://devonline.academy/java
- */
-public class UserMove implements Move {
+public class ConsoleUserInputReader implements UserInputReader {
 
     private final CellNumberConverter cellNumberConverter;
+    private final DataPrinter dataPrinter;
 
-    public UserMove(final CellNumberConverter cellNumberConverter) {
+    public ConsoleUserInputReader(final CellNumberConverter cellNumberConverter, final DataPrinter dataPrinter) {
         this.cellNumberConverter = cellNumberConverter;
+        this.dataPrinter = dataPrinter;
     }
 
     @Override
-    public void make(final GameTable gameTable, final Sign sign) {
+    public Cell getUserInput(final GameTable gameTable) {
         while (true) {
-            final Cell cell = getUserInput(gameTable);
-            if (gameTable.isEmpty(cell)) {
-                gameTable.setSign(cell, sign);
-                return;
-            } else {
-                System.out.println("Can't make a move, because the cell is not free! Try again!");
-            }
-        }
-    }
-
-
-    private Cell getUserInput(final GameTable gameTable) {
-        while (true) {
-            System.out.println("Please type number between 1 and 9: ");
+            dataPrinter.printInfoMessage("Please type number between 1 and 9: ");
             final String userInput = new Scanner(System.in).nextLine();
             if (userInput.length() == 1) {
                 final char ch = userInput.charAt(0);
@@ -62,9 +48,4 @@ public class UserMove implements Move {
             }
         }
     }
-
 }
-
-
-
-
