@@ -31,6 +31,8 @@ public class Game {
 
     private final DataPrinter dataPrinter;
 
+    private final UserInputReader userInputReader;
+
     private final Player player1;
 
     private final Player player2;
@@ -43,12 +45,14 @@ public class Game {
 
 
     public Game(final DataPrinter dataPrinter,
+                final UserInputReader userInputReader,
                 final Player player1,
                 final Player player2,
                 final WinnerVerifier winnerVerifier,
                 final CellVerifier cellVerifier,
                 final boolean canSecondPlayerMakeFirstMove) {
         this.dataPrinter = dataPrinter;
+        this.userInputReader = userInputReader;
         this.player1 = player1;
         this.player2 = player2;
         this.winnerVerifier = winnerVerifier;

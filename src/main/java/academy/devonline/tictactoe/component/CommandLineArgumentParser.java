@@ -18,9 +18,12 @@
 package academy.devonline.tictactoe.component;
 
 import academy.devonline.tictactoe.model.PlayerType;
+import academy.devonline.tictactoe.model.UserInterface;
 
 import static academy.devonline.tictactoe.model.PlayerType.COMPUTER;
 import static academy.devonline.tictactoe.model.PlayerType.USER;
+import static academy.devonline.tictactoe.model.UserInterface.CONSOLE;
+import static academy.devonline.tictactoe.model.UserInterface.GUI;
 
 public class CommandLineArgumentParser {
 
@@ -30,7 +33,8 @@ public class CommandLineArgumentParser {
         this.args = args;
     }
 
-    public PlayerTypes parse() {
+    public CommandLineArguments parse() {
+        UserInterface userInterface = null;
         PlayerType playerType1 = null;
         PlayerType playerType2 = null;
         for (final String arg : args) {
@@ -42,27 +46,38 @@ public class CommandLineArgumentParser {
                 } else {
                     System.err.println("Unsupported command line argument: '" + arg + "'");
                 }
+            } else if (GUI.name().equalsIgnoreCase(arg) || CONSOLE.name().equalsIgnoreCase(arg)) {
+                if (userInterface == null) {
+                    userInterface = UserInterface.valueOf(arg.toUpperCase());
+                } else {
+                    System.err.println("Unsupported command line argument: '" + arg + "'");
+                }
             } else {
                 System.err.println("Unsupported command line argument: '" + arg + "'");
             }
         }
-        if (playerType1 == null) {
-            return new PlayerTypes(USER, COMPUTER);
-        } else if (playerType2 == null) {
-            return new PlayerTypes(USER, playerType1);
-        } else {
-            return new PlayerTypes(playerType1, playerType2);
+        if (userInterface == null) {
+            userInterface = CONSOLE;
         }
-
+        if (playerType1 == null) {
+            return new CommandLineArguments(userInterface, USER, COMPUTER);
+        } else if (playerType2 == null) {
+            return new CommandLineArguments(userInterface, USER, playerType1);
+        } else {
+            return new CommandLineArguments(userInterface, playerType1, playerType2);
+        }
     }
 
-    public static class PlayerTypes {
+    public static class CommandLineArguments {
+
+        private final UserInterface userInterface;
 
         private final PlayerType playerType1;
 
         private final PlayerType playerType2;
 
-        private PlayerTypes(final PlayerType playerType1, final PlayerType playerType2) {
+        private CommandLineArguments(final UserInterface userInterface, final PlayerType playerType1, final PlayerType playerType2) {
+            this.userInterface = userInterface;
             this.playerType1 = playerType1;
             this.playerType2 = playerType2;
         }
@@ -73,6 +88,10 @@ public class CommandLineArgumentParser {
 
         public PlayerType getPlayerType2() {
             return playerType2;
+        }
+
+        public UserInterface getUserInterface() {
+            return userInterface;
         }
     }
 }
