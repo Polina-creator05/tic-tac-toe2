@@ -17,15 +17,7 @@
 
 package academy.devonline.tictactoe.component;
 
-import academy.devonline.tictactoe.model.Cell;
+public interface GameOverHandler {
 
-public interface CellNumberConverter {
-
-    Cell toCell(char number);
-
-
-    char toNumber(Cell cell);
-
+    void gameOver();
 }
-
-

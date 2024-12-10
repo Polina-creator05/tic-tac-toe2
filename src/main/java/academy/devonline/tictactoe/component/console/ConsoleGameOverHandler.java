@@ -15,36 +15,25 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.model;
+package academy.devonline.tictactoe.component.console;
 
-/**
- * @author devonline
- * @link http://devonline.academy/java
- */
-public final class Cell {
+import academy.devonline.tictactoe.component.DataPrinter;
+import academy.devonline.tictactoe.component.GameOverHandler;
 
-    private final int row;
+import java.util.Scanner;
 
-    private final int col;
+public class ConsoleGameOverHandler implements GameOverHandler {
 
-    public Cell(final int row, final int col) {
-        this.row = row;
-        this.col = col;
-    }
 
-    public int getRow() {
-        return row;
-    }
+    final DataPrinter dataPrinter;
 
-    public int getCol() {
-        return col;
+    public ConsoleGameOverHandler(final DataPrinter dataPrinter) {
+        this.dataPrinter = dataPrinter;
     }
 
     @Override
-    public String toString() {
-        return "Cell{" +
-                "row=" + row +
-                ", col=" + col +
-                '}';
+    public void gameOver() {
+        dataPrinter.printInfoMessage("Game over!");
+        new Scanner(System.in).nextLine();
     }
 }

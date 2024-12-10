@@ -15,20 +15,24 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.component;
+package academy.devonline.tictactoe;
 
+import academy.devonline.tictactoe.component.*;
+import academy.devonline.tictactoe.component.config.CommandLineArgumentParser;
+import academy.devonline.tictactoe.component.console.CellNumberConverter;
 import academy.devonline.tictactoe.component.console.ConsoleDatePrinter;
+import academy.devonline.tictactoe.component.console.ConsoleGameOverHandler;
 import academy.devonline.tictactoe.component.console.ConsoleUserInputReader;
-import academy.devonline.tictactoe.component.keypad.DesktopNumericKeypadCellNumberConverter;
+import academy.devonline.tictactoe.component.console.keypad.DesktopNumericKeypadCellNumberConverter;
 import academy.devonline.tictactoe.component.swing.GameWindow;
-import academy.devonline.tictactoe.model.Player;
-import academy.devonline.tictactoe.model.PlayerType;
-import academy.devonline.tictactoe.model.UserInterface;
+import academy.devonline.tictactoe.model.config.PlayerType;
+import academy.devonline.tictactoe.model.config.UserInterface;
+import academy.devonline.tictactoe.model.game.Player;
 
-import static academy.devonline.tictactoe.model.PlayerType.USER;
-import static academy.devonline.tictactoe.model.Sign.O;
-import static academy.devonline.tictactoe.model.Sign.X;
-import static academy.devonline.tictactoe.model.UserInterface.GUI;
+import static academy.devonline.tictactoe.model.config.PlayerType.USER;
+import static academy.devonline.tictactoe.model.config.UserInterface.GUI;
+import static academy.devonline.tictactoe.model.game.Sign.O;
+import static academy.devonline.tictactoe.model.game.Sign.X;
 
 public class GameFactory {
 
@@ -46,17 +50,20 @@ public class GameFactory {
     }
 
     public Game create() {
+        GameOverHandler gameOverHandler;
         DataPrinter dataPrinter;
         UserInputReader userInputReader;
         if (userInterface == GUI) {
             GameWindow gameWindow = new GameWindow();
             dataPrinter = gameWindow;// ConsoleDatePrinter(cellNumberConverter);
-            userInputReader = gameWindow;//new ConsoleUserInputReader(cellNumberConverter, dataPrinter);
+            userInputReader = gameWindow;
+            gameOverHandler = gameWindow;//new ConsoleUserInputReader(cellNumberConverter, dataPrinter);
             // final CellNumberConverter cellNumberConverter = new DesktopNumericKeypadCellNumberConverter();
         } else {
             final CellNumberConverter cellNumberConverter = new DesktopNumericKeypadCellNumberConverter();
             dataPrinter = new ConsoleDatePrinter(cellNumberConverter);
             userInputReader = new ConsoleUserInputReader(cellNumberConverter, dataPrinter);
+            gameOverHandler = new ConsoleGameOverHandler(dataPrinter);
         }
 
         final Player player1;
@@ -79,6 +86,7 @@ public class GameFactory {
                 player2,
                 new WinnerVerifier(),
                 new CellVerifier(),
+                gameOverHandler,
                 canSecondPlayerMakeFirstMove);
     }
 }

@@ -15,22 +15,30 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe.model;
+package academy.devonline.tictactoe.component.console.keypad;
 
-public enum Sign {
+import academy.devonline.tictactoe.component.console.CellNumberConverter;
+import academy.devonline.tictactoe.model.game.Cell;
 
-    X,
+public class TerminalNumericKeypadCellNumberConverter implements CellNumberConverter {
 
-    O,
+    final char[][] mapping = {
+            {'1', '2', '3'},
+            {'4', '5', '6'},
+            {'7', '8', '9'}
+    };
 
-    EMPTY;
 
     @Override
-    public String toString() {
-        if (this == EMPTY) {
-            return " ";
-        } else {
-            return name();
-        }
+    public Cell toCell(final char number) {
+        final int value = number - '0' - 1;
+        return new Cell(value / 3, value % 3);
+    }
+
+    @Override
+    public char toNumber(Cell cell) {
+        return (char) ('0' + (cell.getRow() * 3 + cell.getCol() + 1));
     }
 }
+
+

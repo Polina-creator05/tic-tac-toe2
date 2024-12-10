@@ -15,19 +15,17 @@
  *    limitations under the License.
  */
 
-package academy.devonline.tictactoe;
+package academy.devonline.tictactoe.component.console;
 
-import academy.devonline.tictactoe.component.Game;
+import academy.devonline.tictactoe.model.game.Cell;
 
-/**
- * @author devonline
- * @link http://devonline.academy/java
- */
-public final class Launcher {
+public interface CellNumberConverter {
 
-    public static void main(final String[] args) {
-        GameFactory gameFactory = new GameFactory(args);
-        Game game = gameFactory.create();
-        game.play();
-    }
+    Cell toCell(char number);
+
+
+    char toNumber(Cell cell);
+
 }
+
+
