@@ -16,6 +16,6 @@
 #    limitations under the License.
 #
 # Fix current dir issue. Read more: http://hints.macworld.com/article.php?story=20041217111834902
-  cd "$(dirname "$0")" || exit
+cd "$(dirname "$0")" || exit
 #----------------------------------------------------------------------------------------------------------------------
 ./start.sh gui user computer
