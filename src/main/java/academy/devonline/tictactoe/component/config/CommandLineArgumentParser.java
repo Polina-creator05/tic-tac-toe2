@@ -24,6 +24,7 @@ import static academy.devonline.tictactoe.model.config.PlayerType.COMPUTER;
 import static academy.devonline.tictactoe.model.config.PlayerType.USER;
 import static academy.devonline.tictactoe.model.config.UserInterface.CONSOLE;
 import static academy.devonline.tictactoe.model.config.UserInterface.GUI;
+import static java.lang.String.format;
 
 public class CommandLineArgumentParser {
 
@@ -44,16 +45,22 @@ public class CommandLineArgumentParser {
                 } else if (playerType2 == null) {
                     playerType2 = PlayerType.valueOf(arg.toUpperCase());
                 } else {
-                    System.err.println("Unsupported command line argument: '" + arg + "'");
+                    System.err.printf(
+                            "Invalid command line argument: '%s', because player types alredy set: playerType1 = '%s', playerType2 = '%s'!%n",
+                            arg, playerType1, playerType2);
                 }
             } else if (GUI.name().equalsIgnoreCase(arg) || CONSOLE.name().equalsIgnoreCase(arg)) {
                 if (userInterface == null) {
                     userInterface = UserInterface.valueOf(arg.toUpperCase());
                 } else {
-                    System.err.println("Unsupported command line argument: '" + arg + "'");
+                    System.err.printf(
+                            "Invalid command line argument: '%s', because userInterface alredy set: userInterface= '%s'!%n",
+                            arg, userInterface);
                 }
             } else {
-                System.err.println("Unsupported command line argument: '" + arg + "'");
+                System.err.printf(
+                        "Unsupported command line argument: '%s'!%n",
+                        arg);
             }
         }
         if (userInterface == null) {
