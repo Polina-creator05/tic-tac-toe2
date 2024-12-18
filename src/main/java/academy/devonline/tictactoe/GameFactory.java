@@ -24,6 +24,7 @@ import academy.devonline.tictactoe.component.console.ConsoleDatePrinter;
 import academy.devonline.tictactoe.component.console.ConsoleGameOverHandler;
 import academy.devonline.tictactoe.component.console.ConsoleUserInputReader;
 import academy.devonline.tictactoe.component.console.keypad.DesktopNumericKeypadCellNumberConverter;
+import academy.devonline.tictactoe.component.strategies.RandomComputerMoveStrategy;
 import academy.devonline.tictactoe.component.swing.GameWindow;
 import academy.devonline.tictactoe.model.config.PlayerType;
 import academy.devonline.tictactoe.model.config.UserInterface;
@@ -50,11 +51,15 @@ public class GameFactory {
     }
 
     public Game create() {
-        GameOverHandler gameOverHandler;
-        DataPrinter dataPrinter;
-        UserInputReader userInputReader;
+        final ComputerMoveStrategy[] strategies={
+                new RandomComputerMoveStrategy()
+
+        };
+        final GameOverHandler gameOverHandler;
+        final DataPrinter dataPrinter;
+        final UserInputReader userInputReader;
         if (userInterface == GUI) {
-            GameWindow gameWindow = new GameWindow();
+            final GameWindow gameWindow = new GameWindow();
             dataPrinter = gameWindow;// ConsoleDatePrinter(cellNumberConverter);
             userInputReader = gameWindow;
             gameOverHandler = gameWindow;//new ConsoleUserInputReader(cellNumberConverter, dataPrinter);
@@ -70,13 +75,13 @@ public class GameFactory {
         if (playerType1 == USER) {
             player1 = new Player(X, new UserMove(userInputReader, dataPrinter));
         } else {
-            player1 = new Player(X, new ComputerMove());
+            player1 = new Player(X, new ComputerMove(strategies));
         }
         final Player player2;
         if (playerType2 == USER) {
             player2 = new Player(O, new UserMove(userInputReader, dataPrinter));
         } else {
-            player2 = new Player(O, new ComputerMove());
+            player2 = new Player(O, new ComputerMove(strategies));
         }
 
         final boolean canSecondPlayerMakeFirstMove = playerType1 != playerType2;
