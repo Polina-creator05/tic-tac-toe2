@@ -30,12 +30,6 @@ public class ConsoleDatePrinter implements DataPrinter {
     }
 
     @Override
-    public void printInstructions() {
-        printInfoMessage("Use the following mapping table to specify a cell using number from 1 to 9");
-        print((i, j) -> String.valueOf(cellNumberConverter.toNumber(new Cell(i, j))));
-    }
-
-    @Override
     public void printInfoMessage(final String message) {
         System.out.println(message);
     }
@@ -45,6 +39,11 @@ public class ConsoleDatePrinter implements DataPrinter {
         System.err.println(message);
     }
 
+    @Override
+    public void printInstructions() {
+        printInfoMessage("Use the following mapping table to specify a cell using number from 1 to 9");
+        print((i, j) -> String.valueOf(cellNumberConverter.toNumber(new Cell(i, j))));
+    }
     @Override
     public void printGameTable(final GameTable gameTable) {
         print((i, j) -> String.valueOf(gameTable.getSign(new Cell(i, j))));
