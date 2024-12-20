@@ -17,9 +17,11 @@
 
 package academy.devonline.tictactoe.component.config;
 
+import academy.devonline.tictactoe.model.config.Level;
 import academy.devonline.tictactoe.model.config.PlayerType;
 import academy.devonline.tictactoe.model.config.UserInterface;
 
+import static academy.devonline.tictactoe.model.config.Level.*;
 import static academy.devonline.tictactoe.model.config.PlayerType.COMPUTER;
 import static academy.devonline.tictactoe.model.config.PlayerType.USER;
 import static academy.devonline.tictactoe.model.config.UserInterface.CONSOLE;
@@ -35,6 +37,7 @@ public class CommandLineArgumentParser {
     }
 
     public CommandLineArguments parse() {
+        Level level = null;
         UserInterface userInterface = null;
         PlayerType playerType1 = null;
         PlayerType playerType2 = null;
@@ -57,25 +60,40 @@ public class CommandLineArgumentParser {
                             "Invalid command line argument: '%s', because userInterface alredy set: userInterface= '%s'!%n",
                             arg, userInterface);
                 }
+            } else if (LEVEL1.name().equalsIgnoreCase(arg) ||
+                    LEVEL2.name().equalsIgnoreCase(arg) ||
+                    LEVEL3.name().equalsIgnoreCase(arg)) {
+                if (level == null) {
+                    level = Level.valueOf(arg.toUpperCase());
+                } else {
+                    System.err.printf(
+                            "Invalid command line argument: '%s', because level already set: level='%s'!%n",
+                            arg, level);
+                }
             } else {
                 System.err.printf(
                         "Unsupported command line argument: '%s'!%n",
                         arg);
             }
         }
+        if (level == null) {
+            level = LEVEL3;
+        }
         if (userInterface == null) {
             userInterface = CONSOLE;
         }
         if (playerType1 == null) {
-            return new CommandLineArguments(userInterface, USER, COMPUTER);
+            return new CommandLineArguments(level, userInterface, USER, COMPUTER);
         } else if (playerType2 == null) {
-            return new CommandLineArguments(userInterface, USER, playerType1);
+            return new CommandLineArguments(level, userInterface, USER, playerType1);
         } else {
-            return new CommandLineArguments(userInterface, playerType1, playerType2);
+            return new CommandLineArguments(level, userInterface, playerType1, playerType2);
         }
     }
 
     public static class CommandLineArguments {
+
+        private final Level level;
 
         private final UserInterface userInterface;
 
@@ -83,11 +101,14 @@ public class CommandLineArgumentParser {
 
         private final PlayerType playerType2;
 
-        private CommandLineArguments(final UserInterface userInterface, final PlayerType playerType1, final PlayerType playerType2) {
+        private CommandLineArguments(final Level level, final UserInterface userInterface, final PlayerType playerType1, final PlayerType playerType2) {
+            this.level = level;
             this.userInterface = userInterface;
             this.playerType1 = playerType1;
             this.playerType2 = playerType2;
         }
+
+        public Level getGameLevel() {return level;}
 
         public PlayerType getPlayerType1() {
             return playerType1;

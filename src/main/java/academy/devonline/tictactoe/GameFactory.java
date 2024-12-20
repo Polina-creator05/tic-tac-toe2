@@ -26,16 +26,20 @@ import academy.devonline.tictactoe.component.console.ConsoleUserInputReader;
 import academy.devonline.tictactoe.component.console.keypad.DesktopNumericKeypadCellNumberConverter;
 import academy.devonline.tictactoe.component.strategies.*;
 import academy.devonline.tictactoe.component.swing.GameWindow;
+import academy.devonline.tictactoe.model.config.Level;
 import academy.devonline.tictactoe.model.config.PlayerType;
 import academy.devonline.tictactoe.model.config.UserInterface;
 import academy.devonline.tictactoe.model.game.Player;
 
+import static academy.devonline.tictactoe.model.config.Level.*;
 import static academy.devonline.tictactoe.model.config.PlayerType.USER;
 import static academy.devonline.tictactoe.model.config.UserInterface.GUI;
 import static academy.devonline.tictactoe.model.game.Sign.O;
 import static academy.devonline.tictactoe.model.game.Sign.X;
 
 public class GameFactory {
+
+    private final Level level;
 
     private final UserInterface userInterface;
 
@@ -45,20 +49,31 @@ public class GameFactory {
 
     public GameFactory(final String[] args) {
         final CommandLineArgumentParser.CommandLineArguments commandLineArguments = new CommandLineArgumentParser(args).parse();
+        this.level = commandLineArguments.getGameLevel();
         this.playerType1 = commandLineArguments.getPlayerType1();
         this.playerType2 = commandLineArguments.getPlayerType2();
         this.userInterface = commandLineArguments.getUserInterface();
     }
 
     public Game create() {
-        final ComputerMoveStrategy[] strategies = {
-                new WinNowComputerMoveStrategy(),
-                new PreventUserWinComputerMoveStrategy(),
-                new WinOnTheNextStepComputerMoveStrategy(),
-                new FirstMoveToTheCenterComputerMoveStrategy(),
-                new RandomComputerMoveStrategy()
+      /* final ComputerMoveStrategy[] strategies;
+       try{
+           strategies=level.getComputerMoveStrategies();
+       }catch (IllegalArgumentException exception){
+           throw new IllegalArgumentException("Unsupported level:" + level);
+        }*/
 
-        };
+       final ComputerMoveStrategy[] strategies;
+        if (level == LEVEL1) {
+            strategies = level.getComputerMoveStrategies();
+        } else if (level == LEVEL2) {
+            strategies = level.getComputerMoveStrategies();
+        } else if (level == LEVEL3){
+            strategies = level.getComputerMoveStrategies();
+        }else {
+            throw new IllegalArgumentException("Unsupported level:" + level);
+        }
+
         final GameOverHandler gameOverHandler;
         final DataPrinter dataPrinter;
         final UserInputReader userInputReader;
