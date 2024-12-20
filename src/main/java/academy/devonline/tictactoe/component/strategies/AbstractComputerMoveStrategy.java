@@ -5,7 +5,10 @@ import academy.devonline.tictactoe.model.game.Cell;
 import academy.devonline.tictactoe.model.game.GameTable;
 import academy.devonline.tictactoe.model.game.Sign;
 
-public abstract class AbstractComputerMoveStrategy implements ComputerMoveStrategy{
+import java.util.Random;
+
+public abstract class AbstractComputerMoveStrategy implements ComputerMoveStrategy {
+
 
     private final int expectedCountEmptyCells;
 
@@ -13,45 +16,52 @@ public abstract class AbstractComputerMoveStrategy implements ComputerMoveStrate
         this.expectedCountEmptyCells = expectedCountEmptyCells;
     }
 
+    protected abstract Sign getSign(Sign moveSign);
+
     @Override
     public final boolean tryToMakeMove(final GameTable gameTable, final Sign moveSign) {
         final Sign findSign = getSign(moveSign);
-        return tryToMakeMoveByMainDioganal(gameTable, findSign, moveSign) ||
-                tryToMakeMoveBySecondaryDioganal(gameTable, findSign, moveSign) ||
-                tryToMakeMoveByCols(gameTable, findSign, moveSign) ||
-                tryToMakeMoveByRows(gameTable, findSign, moveSign);
-    }
+        final BestCell bestCell = new BestCell();
+        findBestCellForMoveByRows(gameTable, findSign, bestCell);
+        findBestCellForMoveByCols(gameTable, findSign, bestCell);
+        findBestCellForMoveByMainDioganal(gameTable, findSign, bestCell);
+        findBestCellForMoveBySecondaryDioganal(gameTable, findSign, bestCell);
 
-    private boolean tryToMakeMoveByMainDioganal(final GameTable gameTable, final Sign findSign, final Sign moveSign) {
-        return tryToMakeMoveUsingLambdaConversion(gameTable, findSign, moveSign, 0, (i, j) -> new Cell(j, j));
-    }
-
-    protected abstract Sign getSign(Sign moveSign);
-
-    private boolean tryToMakeMoveBySecondaryDioganal(final GameTable gameTable, final Sign findSign, final Sign moveSign) {
-        return tryToMakeMoveUsingLambdaConversion(gameTable, findSign, moveSign, 0, (i, j) -> new Cell(j, 2 - j));
-
-    }
-
-    private boolean tryToMakeMoveByCols(final GameTable gameTable, final Sign findSign, final Sign moveSign) {
-        for (int i1 = 0; i1 < 3; i1++) {
-            if (tryToMakeMoveUsingLambdaConversion(gameTable, findSign, moveSign, i1, (i, j) -> new Cell(j, i))) {
-                return true;
-            }
+        if (bestCell.count != 0) {
+            final Cell randomCell = bestCell.emptyCells[new Random().nextInt(bestCell.count)];
+            gameTable.setSign(randomCell, moveSign);
+            return true;
         }
         return false;
+    }
+
+    private void findBestCellForMoveByMainDioganal(final GameTable gameTable, final Sign findSign,
+                                                   final BestCell bestCell) {
+        findBestCellForMoveUsingLambdaConversion(gameTable, findSign, bestCell, 0, (i, j) -> new Cell(j, j));
+    }
+
+
+
+    private void findBestCellForMoveBySecondaryDioganal(final GameTable gameTable, final Sign findSign,
+                                                        final BestCell bestCell) {
+        findBestCellForMoveUsingLambdaConversion(gameTable, findSign, bestCell, 0, (i, j) -> new Cell(j, 2 - j));
+
+    }
+
+    private void findBestCellForMoveByCols(final GameTable gameTable, final Sign findSign,
+                                           final BestCell bestCell) {
+        for (int i1 = 0; i1 < 3; i1++) {
+            findBestCellForMoveUsingLambdaConversion(gameTable, findSign, bestCell, i1, (i, j) -> new Cell(j, i));
+        }
     }
 
     @SuppressWarnings("Convert2MethodRef")
-    private boolean tryToMakeMoveByRows(final GameTable gameTable, final Sign findSign, final Sign moveSign) {
+    private void findBestCellForMoveByRows(final GameTable gameTable, final Sign findSign,
+                                           final BestCell bestCell) {
         for (int i1 = 0; i1 < 3; i1++) {
-            if (tryToMakeMoveUsingLambdaConversion(gameTable, findSign, moveSign, i1, (i, j) -> new Cell(i, j))) {
-                return true;
-            }
+            findBestCellForMoveUsingLambdaConversion(gameTable, findSign, bestCell, i1, (i, j) -> new Cell(i, j));
         }
-        return false;
     }
-
 
 
     @FunctionalInterface
@@ -59,30 +69,39 @@ public abstract class AbstractComputerMoveStrategy implements ComputerMoveStrate
         Cell convert(int i, int j);
     }
 
-    private boolean tryToMakeMoveUsingLambdaConversion(final GameTable gameTable,
-                                                       final  Sign findSign,
-                                                       final Sign moveSign,
-                                                       int i,
-                                                       final Lambda lambda) {
+    private void findBestCellForMoveUsingLambdaConversion(final GameTable gameTable,
+                                                          final Sign findSign,
+                                                          final BestCell bestCell,
+                                                          int i,
+                                                          final Lambda lambda) {
         int countEmptyCells = 0;
         int countSignCells = 0;
-        Cell lastEmptyCell = null;
+        final Cell[] localEmptyCells = new Cell[3];
         for (int j = 0; j < 3; j++) {
             Cell cell = lambda.convert(i, j);
             if (gameTable.getSign(cell) == findSign) {
                 countSignCells++;
             } else if (gameTable.isEmpty(cell)) {
-                countEmptyCells++;
-                lastEmptyCell = cell;
+                localEmptyCells[countEmptyCells++] = cell;
             } else {
                 break;
             }
         }
-        if (lastEmptyCell!= null && countEmptyCells == expectedCountEmptyCells &&  countSignCells == 3-expectedCountEmptyCells) {
-            gameTable.setSign(lastEmptyCell, moveSign);
-            return true;
+        if (countEmptyCells == expectedCountEmptyCells && countSignCells == 3 - expectedCountEmptyCells) {
+            for (int j = 0; j < countEmptyCells; j++) {
+                bestCell.add(localEmptyCells[j]);
+            }
         }
-        return false;
     }
 
+    private static class BestCell {
+
+        private final Cell[] emptyCells = new Cell[9];
+        private int count;
+
+        private void add(final Cell cell) {
+            emptyCells[count++] = cell;
+        }
+
+    }
 }
